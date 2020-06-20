@@ -60,26 +60,30 @@
             </div>
             <div class="col-md-4">
             <div class="content-section">
-                <h3>Our Sidebar</h3>
-                <p class='text-muted'>You can put any information here you'd like.
+                <form action="/search" method="POST">
+                    <p><input class="form-control" type = "text" name = "keyword"  placeholder="Search.."/></p>
+                 
+                    
+                </form>
+                <h3>Categories</h3>
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-light">Latest Posts</li>
-                    <li class="list-group-item list-group-item-light">Announcements</li>
-                    <li class="list-group-item list-group-item-light">Calendars</li>
-                    <li class="list-group-item list-group-item-light">etc</li>
+                    <li class="list-group-item list-group-item-light"><a href="#"> JavaScript</a> </li>
+                    <li class="list-group-item list-group-item-light"><a href="#">HTM5L</a> </li>
+                    <li class="list-group-item list-group-item-light"><a href="#">Python</a> </li>
+                    <li class="list-group-item list-group-item-light"><a href="#"></a> Security</li>
                 </ul>
                 
                 </p>
             </div>
             <!-- search -->
-            <div class="content-section">
+            <!-- <div class="content-section">
                 <h3>Search Blog</h3>
                 <form action="http://127.0.0.1:5000/search" method="POST">
                     <p><input class="form-control" type = "text" name = "keyword"  placeholder="Search.."/></p>
                     <p><input class="btn btn-success" type="submit" value="Search"></p>
                     
                 </form>
-            </div>
+            </div> -->
         </div>
         </main>
 
