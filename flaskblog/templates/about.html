@@ -1,4 +1,15 @@
 {% extends "layout.html"%}
 {% block content %}
-    <h1>New About Page</h1>
+<div class="content-section">
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> You check mail <a href="#" class="alert-link">mail</a>.
+      </div>
+    <div class="form-group">
+        <label for="usr">Code:</label>
+        <input type="text" class="form-control" id="codemail">
+      </div>
+   
+     
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
 {% endblock content %}

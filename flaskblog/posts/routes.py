@@ -25,13 +25,29 @@ def new_post():
 
 @posts.route("/post/<string:post_id>")
 def post(post_id):
+     
     sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
     post = db.session.query(Post).from_statement(sql).first()
-
+   
     #post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
 
+    # Comment bai viet
+    # form = PostForm()
+    # if form.validate_on_submit():
+    #     sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
+    #     post = db.session.query(Post).from_statement(sql).first()
+    #         return redirect(url_for('main.home'))
+    # return render_template('post.html',title=post.title, post=post,form=form, legend='New Post')
 
+
+
+# Tim kiem
+# @posts.route('/search/<query>')
+# @login_required
+# def search(query):
+#   results = Post.query.whoosh_search(query).all()
+#   return render_template('home.html', query=query, results=results)
 
 @posts.route("/post/<int:post_id>/update", methods=["GET", "POST"])
 @login_required

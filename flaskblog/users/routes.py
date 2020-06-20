@@ -45,6 +45,8 @@ def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
+# Mail     
+
 
 @users.route("/change-pwd", methods=['GET', 'POST'])
 @login_required

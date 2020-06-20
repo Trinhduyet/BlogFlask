@@ -6,8 +6,11 @@ from flaskblog import db
 
 from datetime import datetime
 
+from flask_bcrypt import Bcrypt
+
 app = create_app()
 manager = Manager(app)
+bcrypt = Bcrypt()
 
 @manager.command
 def init():
@@ -30,6 +33,7 @@ def filldb():
         username = "admin",
         email = "admin@gmail.com",
         password = "123456"
+        # password =   bcrypt.generate_password_hash("123456");
     )
     db.session.add(admin)
     db.session.commit()
