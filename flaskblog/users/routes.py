@@ -17,6 +17,11 @@ def register():
         user = User(username=form.username.data,
                     email=form.email.data,
                     password=form.password.data)
+
+        # hasing passs  
+        # user = User(username=form.username.data,
+        # hasing passs            email=form.email.data)
+        # user.set_password(form.password.data)             
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created', 'success')
@@ -30,6 +35,9 @@ def login():
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
+        # check hasing pass
+        # user = User.query.filter_by(username=form.username.data).first()
+        # if user and user.check_password(form.password.data)
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.password == form.password.data:
             login_user(user)
@@ -73,3 +81,6 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=3)
     return render_template('user_posts.html', posts=posts, user=user)
+
+
+
