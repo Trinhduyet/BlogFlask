@@ -39,3 +39,8 @@ class ChangePasswordForm(FlaskForm):
     re_password = StringField('Re-Password',
                            validators=[DataRequired(), Length(min=2, max=20)])
     submit = SubmitField('Update Account')
+
+class RequestResetForm(FlaskForm):
+    emailcode = StringField('Verity code', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+  
