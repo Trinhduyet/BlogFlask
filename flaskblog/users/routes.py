@@ -42,6 +42,20 @@ def register():
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
+# @users.route("/login", methods=['GET', 'POST'])
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('main.home'))
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(email=form.email.data).first()
+#         if user and user.password == form.password.data:
+#             login_user(user)
+#             next_page = request.args.get('next')
+#             return redirect(next_page) if next_page else redirect(url_for('main.home'))
+#         else:
+#             flash('Login Unsuccessful. Please check email  and password', 'danger')
+#     return render_template('login.html', title='Login', form=form)
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
@@ -81,7 +95,8 @@ def account():
     if form.validate_on_submit():
         user = User.query.filter_by(username=current_user.username).first()
         if user and form.password.data == form.re_password.data:
-            user.password = form.password.data
+            # user.password = form.password.data
+            user.password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             db.session.commit()
             flash('Your account has been updated!', 'success')
         else:
