@@ -19,36 +19,58 @@
     </article>
     <!-- Comment -->
  
-  <div class="content-section">
-    <h5>Leave a Comment</h5>
-    
-    <div class="form-group">
-        <label for="usr">Name:</label>
-        <input type="text" class="form-control" id="usr">
-      </div>
-   
-      <div class="form-group">
-        <label for="comment">Content</label>
-        <textarea class="form-control" rows="5" id="comment"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">Comment</button>
-   
-  </div>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <div class="form-group">
+                    {{ form.author.label(class="form-control-label") }}
+                    {% if form.author.errors %}
+                        {{ form.author(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.author.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.author(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.content.label(class="form-control-label") }}
+                    {% if form.content.errors %}
+                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.content(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
 
 
   <div class="content-section">
     <div class="media border p-3">
         <img src="../static/profile_pics/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
         <div class="media-body">
-          <h5>John Doe <small><i>Posted on February 19, 2016</i></small></h5>
-          <p>Lorem ipsum...</p>
-        </div>
-      </div>
-      <div class="media border p-3">
-        <img src="../static/profile_pics/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
-        <div class="media-body">
-          <h5>Name <small><i>Posted on February 19, 2020</i></small></h5>
-          <p>Following Link google.com</p>
+          {% if comments %}
+                    <h2>Comments</h2>
+                    <p>
+                    {% for comment in comments %}
+                        <p>{{ comment.author }}</p>
+                        <p>{{ comment.content }}</p>
+                    {% endfor %}
+                    </p>
+                {% endif %}
         </div>
       </div>
   </div>
