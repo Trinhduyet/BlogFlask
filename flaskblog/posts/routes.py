@@ -2,8 +2,8 @@ from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
 from flaskblog import db
-from flaskblog.models import Post
-from flaskblog.posts.forms import PostForm
+from flaskblog.models import Post,Comment
+from flaskblog.posts.forms import PostForm,CommentForm
 
 posts = Blueprint('posts', __name__)
 
@@ -23,14 +23,23 @@ def new_post():
                            form=form, legend='New Post')
 
 
-@posts.route("/post/<string:post_id>")
+@posts.route("/post/<string:post_id>", methods=["GET", "POST"])
 def post(post_id):
      
     sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
+    posts = Post.query.get_or_404(post_id)
     post = db.session.query(Post).from_statement(sql).first()
-   
+    comment = Comment.query.filter_by(post_id=post_id).all()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(author=form.author.data, content=form.content.data,
+                    post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash("Your post has been created", 'success')
+       
     #post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    return render_template('post.html', title=post.title, post=post, posts=posts,comments=comment,form=form)
 
     # Comment bai viet
     # form = PostForm()
@@ -42,12 +51,15 @@ def post(post_id):
 
 
 
-# Tim kiem
-# @posts.route('/search/<query>')
-# @login_required
-# def search(query):
-#   results = Post.query.whoosh_search(query).all()
-#   return render_template('home.html', query=query, results=results)
+@posts.route('/search')
+def search():
+    query = request.args['query']
+    page = request.args.get('page', 1, type=int)
+    # posts = Post.query.filter(Post.title.endswith(query)).paginate(page=page, per_page=2)
+
+    search = "%{}%".format(query)
+    posts = Post.query.filter(Post.title.like(search)).paginate(page=page, per_page=2)
+    return render_template('home.html', posts=posts)
 
 @posts.route("/post/<int:post_id>/update", methods=["GET", "POST"])
 @login_required

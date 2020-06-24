@@ -3,3 +3,8 @@ flask-sqlalchemy
 flask-script
 flask-wtf
 six
+flask_bcrypt
+flask_login
+flask_mail
+email-validator
+Pillow
