@@ -59,20 +59,22 @@
 
 
   <div class="content-section">
-    <div class="media border p-3">
+    {% if comments %}
+    <h2>Comments</h2>
+    <div>
+        {% for comment in comments %}
+        <div class="media border p-3">
         <img src="../static/profile_pics/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
         <div class="media-body">
-          {% if comments %}
-                    <h2>Comments</h2>
-                    <p>
-                    {% for comment in comments %}
-                        <p>{{ comment.author }}</p>
-                        <p>{{ comment.content }}</p>
-                    {% endfor %}
-                    </p>
-                {% endif %}
+                    
+            <h5>{{ comment.author }}</h5>
+            <div>{{ comment.content|safe }}</div>
+                    
         </div>
-      </div>
+       </div>
+       {% endfor %}
+    </div>
+    {% endif %}
   </div>
 
 

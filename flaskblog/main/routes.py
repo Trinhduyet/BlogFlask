@@ -16,3 +16,7 @@ def home():
 @main.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+@main.route("/dollar")
+def dollar():
+    return render_template('attack.html', title='Dollars')

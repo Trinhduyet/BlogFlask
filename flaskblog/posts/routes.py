@@ -23,31 +23,32 @@ def new_post():
                            form=form, legend='New Post')
 
 
-@posts.route("/post/<string:post_id>", methods=["GET", "POST"])
-def post(post_id):
+# @posts.route("/post/<string:post_id>", methods=["GET", "POST"])
+# def post(post_id):
      
-    sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
-    posts = Post.query.get_or_404(post_id)
-    post = db.session.query(Post).from_statement(sql).first()
-    comment = Comment.query.filter_by(post_id=post_id).all()
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment = Comment(author=form.author.data, content=form.content.data,
-                    post_id=post_id)
-        db.session.add(comment)
-        db.session.commit()
-        flash("Your post has been created", 'success')
+#     sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
+#     posts = Post.query.get_or_404(post_id)
+#     post = db.session.query(Post).from_statement(sql).first()
+#     comment = Comment.query.filter_by(post_id=post_id).all()
+#     form = CommentForm()
+#     if form.validate_on_submit():
+#         comment = Comment(author=form.author.data, content=form.content.data,
+#                     post_id=post_id)
+#         db.session.add(comment)
+#         db.session.commit()
+#         flash("Your post has been created", 'success')
        
-    #post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post, posts=posts,comments=comment,form=form)
+#     #post = Post.query.get_or_404(post_id)
+#     return render_template('post.html', title=post.title, post=post, posts=posts,comments=comment,form=form)
 
-    # Comment bai viet
-    # form = PostForm()
-    # if form.validate_on_submit():
-    #     sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
-    #     post = db.session.query(Post).from_statement(sql).first()
-    #         return redirect(url_for('main.home'))
-    # return render_template('post.html',title=post.title, post=post,form=form, legend='New Post')
+@posts.route("/post/<string:post_id>")
+def post(post_id):
+    sql = db.text("SELECT * FROM Post WHERE id={}".format(post_id))
+    post = db.session.query(Post).from_statement(sql).first()
+    form = CommentForm()
+    comment = Comment.query.filter_by(post_id=post_id).all()
+    #post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post,comments=comment,form=form)
 
 
 
@@ -59,7 +60,9 @@ def search():
 
     search = "%{}%".format(query)
     posts = Post.query.filter(Post.title.like(search)).paginate(page=page, per_page=2)
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts,query=query)
+
+
 
 @posts.route("/post/<int:post_id>/update", methods=["GET", "POST"])
 @login_required
