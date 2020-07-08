@@ -7,8 +7,9 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
-    MAIL_SERVER = 'stmp.googlemail.com'
+    MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('trinhnv.hvitclan@gmail.com')
-    MAIL_PASSWORD = os.environ.get('Trangkun2')
+    #MAIL_USE_SSL = False
+    MAIL_USERNAME = 'trinhnv.hvitclan@gmail.com'
+    MAIL_PASSWORD = 'Trangkun2'

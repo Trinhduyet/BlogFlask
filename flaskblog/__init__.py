@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_mail import Mail
+from flask_mail import Mail,Message
 from flaskblog.config import Config
 
 db = SQLAlchemy()
@@ -34,5 +34,12 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    # app.config['MAIL_SERVER']='smtp.gmail.com'
+    # app.config['MAIL_PORT'] = 465
+    # app.config['MAIL_USERNAME'] = 'trinhnv.hvitclan@gmail.com'
+    # app.config['MAIL_PASSWORD'] = 'Trangkun2'
+    # app.config['MAIL_USE_TLS'] = False
+    # app.config['MAIL_USE_SSL'] = True
+    # mail = Mail(app)
 
     return app
