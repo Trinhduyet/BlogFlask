@@ -2,24 +2,17 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
-import random
+from flaskblog.users.utils import generateOTP,send_reset_email
 from flaskblog import mail
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, ChangePasswordForm,RequestResetForm)
 from flaskblog.users.utils import save_picture
+from flask_mail import Mail,Message
+from flask_jwt import JWT, jwt_required, current_identity
+from flask import session
+
 users = Blueprint('users', __name__)
 
-
-
-def send_reset_email(user):
-    random_code = ''.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
-    txt = "code {} author"
-    txtbody = txt.format(random_code)
-    msg = Message('Password Reset Request',
-                  sender='trinhnv.hvitclan@gmail.com',
-                  recipients=[user.email])
-    msg.body = txtbody
-    mail.send(msg)
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
@@ -70,8 +63,13 @@ def login():
         email= form.email.data
         #if user and user.password == form.password.data:
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            auth_token = user.encode_auth_token(user.id)
+            token = user.decode_auth_token(auth_token)
+            print(auth_token)
+            print(token)
+            session['api_session_token'] = auth_token
             # login_user(user)
-            # send_reset_email(user)
+            #send_reset_email(user)
             return redirect(url_for('users.author_mail',email=email))
             # next_page = request.args.get('next')
             # return redirect(next_page) if next_page else redirect(url_for('main.home'))
@@ -118,6 +116,7 @@ def user_posts(username):
 @users.route("/author_mail", methods=['GET', 'POST'])
 def author_mail():
     random_code = '123456'
+    code = generateOTP()
     email = request.args['email']
     user = User.query.filter_by(email=email).first()
     # if current_user.is_authenticated:
