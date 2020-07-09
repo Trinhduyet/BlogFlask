@@ -4,11 +4,13 @@ from flask_login import current_user, login_required
 from flaskblog import db
 from flaskblog.models import Post,Comment
 from flaskblog.posts.forms import PostForm,CommentForm
+from flask_jwt import jwt_required
 
 posts = Blueprint('posts', __name__)
 
 
 @posts.route("/post/new", methods=["GET", "POST"])
+#@jwt_required()
 @login_required
 def new_post():
     form = PostForm()

@@ -4,6 +4,11 @@ from flask import current_app
 from flaskblog import db, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+from datetime import datetime, timedelta
+from flaskblog import create_app
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,6 +33,32 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def encode_auth_token(self, user_id):
+        app = create_app()
+        try:
+            payload = {
+                'exp': datetime.utcnow() + timedelta(days=0, seconds=5),
+                'iat': datetime.utcnow(),
+                'sub': user_id
+            }
+            return jwt.encode(
+                payload,
+                app.config.get('SECRET_KEY'),
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e    
+
+    @staticmethod
+    def decode_auth_token(token):
+        app = create_app()
+        try:
+            #id = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])['reset_password']
+            payload = jwt.decode(token, app.config.get('SECRET_KEY'),  algorithm='HS256')
+            return payload['sub']                
+        except:
+            return
+        #return User.query.get(id)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

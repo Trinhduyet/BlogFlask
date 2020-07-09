@@ -1,4 +1,4 @@
-from flaskblog import db, bcrypt
+#from flaskblog import db, bcrypt
 from flaskblog.models import User
 
 

@@ -8,3 +8,4 @@ flask_login
 flask_mail
 email-validator
 Pillow
+Flask-JWT

@@ -8,6 +8,9 @@ from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, ChangePasswordForm,RequestResetForm)
 from flaskblog.users.utils import save_picture
 from flask_mail import Mail,Message
+from flask_jwt import JWT, jwt_required, current_identity
+from flask import session
+
 users = Blueprint('users', __name__)
 
 
@@ -58,10 +61,15 @@ def login():
         # if user and user.check_password(form.password.data)
         user = User.query.filter_by(email=form.email.data).first()
         email= form.email.data
-        if user and user.password == form.password.data:
-        #if user and bcrypt.check_password_hash(user.password, form.password.data):
+        #if user and user.password == form.password.data:
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            auth_token = user.encode_auth_token(user.id)
+            token = user.decode_auth_token(auth_token)
+            print(auth_token)
+            print(token)
+            session['api_session_token'] = auth_token
             # login_user(user)
-            send_reset_email(user)
+            #send_reset_email(user)
             return redirect(url_for('users.author_mail',email=email))
             # next_page = request.args.get('next')
             # return redirect(next_page) if next_page else redirect(url_for('main.home'))
